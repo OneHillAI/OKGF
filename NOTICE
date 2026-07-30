@@ -1,0 +1,15 @@
+OKGF - Open Knowledge and Governance Format
+Copyright 2026 OneHill Foundation
+
+This product includes the OKGF specification and reference conformance tooling,
+developed and stewarded by the OneHill Foundation.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+these files except in compliance with the License. You may obtain a copy of the
+License in the LICENSE file or at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+OKGF is a superset of the Open Knowledge Format (OKF), an independent project of
+Google LLC (https://github.com/GoogleCloudPlatform/knowledge-catalog), also
+published under Apache-2.0. OKGF is not affiliated with or endorsed by Google.

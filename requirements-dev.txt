@@ -1,0 +1,6 @@
+# Reference validator + test suite.
+# The validator itself needs only PyYAML; `cryptography` enables signature verification and
+# `pytest` runs the test suite.
+PyYAML>=6.0
+cryptography>=42.0
+pytest>=8.0
