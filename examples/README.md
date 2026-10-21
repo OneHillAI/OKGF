@@ -22,7 +22,7 @@ A fully governed bundle:
 Verify the signed promotion:
 
 ```sh
-python ../../tools/okgf_validate.py --pubkey governed/ORG_PUBKEY.pem governed
+okgf --pubkey governed/ORG_PUBKEY.pem governed
 ```
 
 The signature in `billing-model.md` was produced with an example-only key. Do not reuse it; a real

@@ -1,17 +1,12 @@
 """Tests for the OKGF conformance validator."""
 
-import importlib.util
-import sys
 from pathlib import Path
 
 import pytest
 
-ROOT = Path(__file__).resolve().parent.parent
-_spec = importlib.util.spec_from_file_location("okgf_validate", ROOT / "tools" / "okgf_validate.py")
-okgf = importlib.util.module_from_spec(_spec)
-sys.modules["okgf_validate"] = okgf  # dataclasses resolves annotations via the registered module
-_spec.loader.exec_module(okgf)
+from okgf import validate as okgf
 
+ROOT = Path(__file__).resolve().parent.parent
 EXAMPLES = ROOT / "examples"
 
 

@@ -1,8 +1,9 @@
 # OKGF Conformance
 
 This document defines what it means for a page or bundle to conform to **OKGF v0.1**, and how to check
-it with the reference validator in [`tools/okgf_validate.py`](tools/okgf_validate.py). The normative rules
-live in [`SPEC.md`](SPEC.md); this file restates them as a checklist and describes the tooling.
+it with the reference validator, installable as the `okgf` command (see [`docs/INSTALL.md`](docs/INSTALL.md);
+its source is the [`okgf/`](okgf/) package). The normative rules live in [`SPEC.md`](SPEC.md); this file
+restates them as a checklist and describes the tooling.
 
 ## What conformance means
 
@@ -45,17 +46,17 @@ key is supplied, the validator format-checks the signature and reports it as **u
 ## Checking conformance
 
 The reference validator needs Python 3.9+ and PyYAML. Signature verification additionally needs the
-`cryptography` package and a public key.
+`cryptography` package (the `verify` extra) and a public key.
 
 ```sh
 # Validate pages and/or bundle directories (structure + governance ranges):
-python tools/okgf_validate.py examples/minimal examples/governed
+okgf examples/minimal examples/governed
 
 # Also cryptographically verify signatures against an org public key:
-python tools/okgf_validate.py --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
+okgf --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
 
 # Treat warnings (e.g. missing recommended OKF fields, unverified signatures) as failures:
-python tools/okgf_validate.py --strict examples/governed
+okgf --strict examples/governed
 ```
 
 Exit status is `0` when there are no errors (and, under `--strict`, no warnings), otherwise `1`. A usage or

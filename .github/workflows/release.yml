@@ -1,0 +1,57 @@
+name: release
+
+# Publish the `okgf` package to PyPI when a version tag is pushed (e.g. v0.1.0).
+# Publishing uses PyPI Trusted Publishing (OIDC): no API token is stored in the repo. The PyPI
+# project must list this repository + workflow + the `pypi` environment as a trusted publisher.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+      - name: Smoke-test the built wheel
+        run: |
+          python -m pip install dist/*.whl
+          okgf --version
+          okgf --strict examples/minimal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # OIDC token for PyPI Trusted Publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  bump-homebrew:
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    # Optional: open a PR against the tap to update the formula. Needs a HOMEBREW_TAP_TOKEN secret
+    # with push/PR access to OneHillAI/homebrew-tap. Skipped automatically when the secret is absent.
+    if: ${{ false }}
+    steps:
+      - name: Bump the tap formula
+        run: echo "Enable this job and set HOMEBREW_TAP_TOKEN to auto-bump OneHillAI/homebrew-tap."

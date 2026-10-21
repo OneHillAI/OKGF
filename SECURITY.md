@@ -5,9 +5,9 @@ matter and we take reports on both.
 
 ## Scope
 
-- **The reference validator** (`tools/okgf_validate.py`) - parsing untrusted bundles (YAML, tar-free but
-  file I/O), and signature verification. A bug that lets a malformed bundle crash, hang, or mislead the
-  validator is in scope.
+- **The reference validator** (the [`okgf/`](okgf/) package, run as the `okgf` command) - parsing
+  untrusted bundles (YAML, tar-free but file I/O), and signature verification. A bug that lets a malformed
+  bundle crash, hang, or mislead the validator is in scope.
 - **The trust model in the spec** - the `x-okgf-signature` scheme and the conformance rules. If you
   find a way a page could be treated as trusted when it should not be (or vice versa), that is a spec-level
   security issue and we want to hear it.

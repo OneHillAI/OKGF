@@ -8,18 +8,22 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install dependencies
-        run: python -m pip install -r requirements-dev.txt
-      - name: Validate example bundles (strict, with signature verification)
+          python-version: ${{ matrix.python-version }}
+      - name: Install the okgf package (with dev + verify extras)
+        run: python -m pip install -e ".[dev]"
+      - name: Validate example bundles with the okgf command (strict, with signature verification)
         run: |
-          python tools/okgf_validate.py --strict \
-            --pubkey examples/governed/ORG_PUBKEY.pem \
-            examples/governed
-          python tools/okgf_validate.py --strict examples/minimal
+          okgf --strict --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
+          okgf --strict examples/minimal
+      - name: Back-compat shim still validates
+        run: python tools/okgf_validate.py --strict examples/minimal
       - name: Run tests
         run: python -m pytest tests/ -q
