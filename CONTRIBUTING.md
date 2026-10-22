@@ -8,7 +8,8 @@ the reference validator.
 
 - **Spec clarifications or fixes** - wording, ambiguities, or errors in `SPEC.md` / `CONFORMANCE.md`.
 - **New or improved examples** - sample bundles under `examples/` that show a real pattern.
-- **Validator improvements** - bug fixes or checks in `tools/okgf_validate.py`, with tests.
+- **Validator improvements** - bug fixes or checks in the [`okgf/`](okgf/) package (run as the `okgf`
+  command), with tests.
 - **Proposed field or lifecycle changes** - larger changes to the governance model. Open an issue first
   (see below) so we can discuss before you write it.
 
@@ -22,10 +23,10 @@ must not break OKF conformance.
 2. **Branch and make the change.** Keep PRs focused on one thing.
 3. **Run the checks locally:**
    ```sh
-   pip install -r requirements-dev.txt
+   pip install -e ".[dev]"
    python -m pytest tests/ -q
-   python tools/okgf_validate.py --strict examples/minimal
-   python tools/okgf_validate.py --strict --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
+   okgf --strict examples/minimal
+   okgf --strict --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
    ```
    New or changed behaviour needs a test. New example bundles must pass the validator (CI enforces this).
 4. **Open a pull request** against `main`. CI runs the validator and the test suite on every PR.

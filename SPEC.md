@@ -117,6 +117,7 @@ Consumers MUST tolerate missing governance fields and MUST preserve unrecognized
 
 ## Implementation
 
-Reference validator: [`tools/okgf_validate.py`](tools/okgf_validate.py) in this repository checks
-single-page and whole-bundle conformance, including optional Ed25519 signature verification. This
-**specification** is Apache-2.0, so any tool may implement OKGF freely.
+Reference validator: the [`okgf/`](okgf/) package in this repository, installable as the `okgf`
+command (see [`docs/INSTALL.md`](docs/INSTALL.md)), checks single-page and whole-bundle conformance,
+including optional Ed25519 signature verification. This **specification** is Apache-2.0, so any tool
+may implement OKGF freely.

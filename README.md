@@ -29,6 +29,7 @@ is coming soon.
 
 ## Table of Contents
 
+- [Install](#install)
 - [Why OKGF exists](#why-okgf-exists)
 - [How it works](#how-it-works)
 - [The review lifecycle](#the-review-lifecycle)
@@ -37,6 +38,31 @@ is coming soon.
 - [What's here](#whats-here)
 - [Lineage](#lineage)
 - [Status](#status) · [Contributing](#contributing) · [License](#license)
+
+## Install
+
+Install the reference validator as the `okgf` command. No system Python required - this uses
+[uv](https://docs.astral.sh/uv/) to manage an isolated Python for the tool:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/OneHillAI/okgf/main/install.sh | sh
+```
+
+Or via Homebrew, or straight from PyPI:
+
+```sh
+brew install OneHillAI/tap/okgf
+pipx install okgf        # or: uv tool install okgf, or: pip install okgf
+```
+
+Then validate a bundle:
+
+```sh
+okgf --strict path/to/bundle
+```
+
+Signature verification is optional: add the `verify` extra (`OKGF_VERIFY=1` for the installer above,
+or `pip install 'okgf[verify]'`). See [`docs/INSTALL.md`](docs/INSTALL.md) for all the options.
 
 ## Why OKGF exists
 
@@ -105,24 +131,27 @@ key is published out of band, so anyone can confirm the org really approved it, 
 
 ## Get started
 
-Validate a bundle with the reference validator (Python plus PyYAML):
+With the `okgf` command [installed](#install), validate the example bundles:
 
 ```sh
-python tools/okgf_validate.py examples/minimal examples/governed
+okgf examples/minimal examples/governed
 ```
 
 Add `--pubkey` to cryptographically verify signatures, and `--strict` to treat warnings as errors:
 
 ```sh
-python tools/okgf_validate.py --strict --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
+okgf --strict --pubkey examples/governed/ORG_PUBKEY.pem examples/governed
 ```
 
-Run the tests:
+Developing on the validator? Install it editable and run the tests from a checkout:
 
 ```sh
-pip install -r requirements-dev.txt
+pip install -e ".[dev]"
 python -m pytest tests/ -q
 ```
+
+The historical `python tools/okgf_validate.py ...` entry point still works from a checkout; it is a
+thin shim over the package.
 
 ## Run a store
 
@@ -149,8 +178,9 @@ See [`docs/STORE.md`](docs/STORE.md) for the full API and design.
 
 - **[`SPEC.md`](SPEC.md)** - the v0.1 specification, the additive delta over OKF field by field.
 - **[`CONFORMANCE.md`](CONFORMANCE.md)** - what conformance means and how to check it.
-- **[`tools/okgf_validate.py`](tools/okgf_validate.py)** - the reference validator, with optional Ed25519
-  signature verification.
+- **[`okgf/`](okgf/)** - the reference validator, installable as the `okgf` command (see
+  [`docs/INSTALL.md`](docs/INSTALL.md)), with optional Ed25519 signature verification.
+  [`tools/okgf_validate.py`](tools/okgf_validate.py) remains as a back-compat shim over it.
 - **[`store/`](store/)** - a runnable reference store: ingest, trust-filtered retrieval, the review
   lifecycle, and a zero-dependency HTTP API. See [`docs/STORE.md`](docs/STORE.md).
 - **[`examples/`](examples/)** - two bundles validated in CI: [`minimal/`](examples/minimal/) (OKF baseline,

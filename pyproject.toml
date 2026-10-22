@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "okgf"
+version = "0.1.0"
+description = "Reference validator for the Open Knowledge and Governance Format (OKGF)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "OneHill Foundation" }]
+keywords = ["okgf", "okf", "knowledge", "governance", "markdown", "validator"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Text Processing :: Markup",
+]
+# The validator itself needs only PyYAML. Signature verification is optional (see the `verify` extra).
+dependencies = ["PyYAML>=6.0"]
+
+[project.urls]
+Homepage = "https://onehill.org/okgf"
+Repository = "https://github.com/OneHillAI/okgf"
+Specification = "https://github.com/OneHillAI/okgf/blob/main/SPEC.md"
+Issues = "https://github.com/OneHillAI/okgf/issues"
+
+[project.optional-dependencies]
+# Ed25519 signature verification (`okgf --pubkey ...`).
+verify = ["cryptography>=42.0"]
+# Everything needed to develop and test the package.
+dev = ["pytest>=8.0", "cryptography>=42.0", "build>=1.0"]
+
+[project.scripts]
+okgf = "okgf.validate:main"
+
+[tool.hatch.build.targets.wheel]
+# Ship only the validator package; the reference store and examples stay in the repo/sdist.
+packages = ["okgf"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "okgf/",
+    "tools/okgf_validate.py",
+    "tests/",
+    "examples/",
+    "docs/",
+    "conftest.py",
+    "SPEC.md",
+    "CONFORMANCE.md",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+]
