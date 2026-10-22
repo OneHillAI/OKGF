@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -27,3 +27,12 @@ jobs:
         run: python tools/okgf_validate.py --strict examples/minimal
       - name: Run tests
         run: python -m pytest tests/ -q
+
+  # Stable required-status context. Branch protection requires the single check
+  # `validate`; this gate passes only when every `test` matrix leg (3.9, 3.12)
+  # passes, so the required check name does not change with the matrix.
+  validate:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All conformance matrix legs passed."
